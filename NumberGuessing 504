@@ -1,0 +1,75 @@
+// Importing necessary JavaFX libraries
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import java.util.Random;
+
+// Class definition for the NumberGuessingGame application
+public class NumberGuessingGame extends Application {
+    // Declaration of variables to store the random number, attempts, and labels for displaying results and hints
+    private int randomNumber;
+    private int attempts;
+    private Label resultLabel;
+    private Label hintLabel;
+
+    // Overriding the start method to initialize the application
+    @Override
+    public void start(Stage primaryStage) {
+        // Setting the title of the application window
+        primaryStage.setTitle("Number Guessing Game by Kurt Wilmond Vince S. Dimasuhid");
+
+        // Generating a random number between 1 and 100
+        Random rand = new Random();
+        randomNumber = rand.nextInt(100) + 1; // Generate a random number between 1 and 100
+        attempts = 0;
+
+        // Creating GUI components: labels, text field, button
+        Label guessLabel = new Label("Guess the number (1-100):");
+        TextField guessField = new TextField();
+        resultLabel = new Label();
+        hintLabel = new Label();
+
+        Button submitButton = new Button("Submit Guess");
+        // Event handler for the submit button to check the guess
+        submitButton.setOnAction(e -> checkGuess(Integer.parseInt(guessField.getText())));
+
+        // Creating a layout for the GUI components
+        VBox root = new VBox(10);
+        root.setPadding(new Insets(20));
+        root.setAlignment(Pos.CENTER);
+        root.getChildren().addAll(guessLabel, guessField, submitButton, resultLabel, hintLabel);
+
+        // Creating the scene and setting it to the stage
+        Scene scene = new Scene(root, 300, 250);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    // Method to check the user's guess
+    private void checkGuess(int guess) {
+        attempts++;
+
+        // Comparing the guess with the random number and providing feedback
+        if (guess == randomNumber) {
+            resultLabel.setText("Congratulations! You guessed it right in " + attempts + " attempts.");
+            hintLabel.setText("");
+        } else if (guess < randomNumber) {
+            resultLabel.setText("Too low! Try a higher number.");
+            hintLabel.setText("Hint: Try a number higher than " + guess);
+        } else {
+            resultLabel.setText("Too high! Try a lower number.");
+            hintLabel.setText("Hint: Try a number lower than " + guess);
+        }
+    }
+
+    // Main method to launch the application
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
